@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import Modal from "./components/modal/Modal";
 import Modal1 from "./components/modal/Modal1";
 
-function teacher() {
+function Teacher() {
   const { teachers } = useAppSelector((store) => store.teachers);
   const dispatch = useAppDispatch();
 
@@ -172,4 +172,4 @@ function teacher() {
   );
 }
 
-export default teacher;
+export default Teacher;

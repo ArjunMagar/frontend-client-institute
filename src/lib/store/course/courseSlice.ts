@@ -111,3 +111,24 @@ export function deleteCourse(token:string,id:string) {
         }
     }
 }
+
+export function fetchInstituteCourses(instituteId: string) {
+    return async function fetchCoursesThunk(dispatch: AppDispatch) {
+        try {
+            const response = await API.get(`/student/institute/${instituteId}/courses`)
+
+            console.log(response,"Resultaaa")
+            // if(response.status === 200){
+            //     dispatch(setStatus(Status.Success))
+            //     dispatch(setCourse(response.data.data))
+            //     dispatch(resetStatus())
+            // }else{
+            //     dispatch(setStatus(Status.Error))
+            // }
+          
+        } catch (error) {
+            console.log(error)
+            dispatch(setStatus(Status.Error))
+        }
+    }
+}

@@ -3,14 +3,18 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import "./styles/home.css";
 import Image from "next/image";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { IDecodedToken } from "./institute/institute.types";
 import { jwtDecode } from "jwt-decode";
+import { getInstitutes } from "@/lib/store/institute/instituteSlice";
 
 function Home() {
   const { role } = useAppSelector((store) => store.auth.user);
-  const [DecodedToken,setDToken]= useState<IDecodedToken>()
+  const { institutes } = useAppSelector((store) => store.institute)
+  const [DecodedToken, setDToken] = useState<IDecodedToken>()
+  const dispatch = useAppDispatch();
   useEffect(() => {
+    dispatch(getInstitutes())
     const token = localStorage.getItem("token");
     if (token) {
       try {
@@ -48,6 +52,7 @@ function Home() {
     localStorage.removeItem("token"); //delete from storage
     setDToken(undefined); //update state
   };
+
 
   return (
     <>
@@ -163,7 +168,7 @@ function Home() {
                   Our Services
                 </a>
                 <a href="#contact" className="btn btn-outline">
-                  Contact Us
+                  Student Portal
                 </a>
               </div>
             </div>
@@ -186,9 +191,9 @@ function Home() {
               )}
             </div>
             <div className="hero-content">
-              {(role === "institute" || DecodedToken?.role ==="institute") &&(<Link href="/institute/dashboard" className="btn btn-outline">
-                  Go to the Institute
-                </Link>)}
+              {(role === "institute" || DecodedToken?.role === "institute") && (<Link href="/institute/dashboard" className="btn btn-outline">
+                Go to the Institute
+              </Link>)}
             </div>
           </div>
           <div className="hero-image">
@@ -206,68 +211,32 @@ function Home() {
         {/* Services Section */}
         <section id="services" className="services">
           <div className="container">
-            <h2>Our Services</h2>
+            <h2>Our Joined Institutes</h2>
             <div className="services-grid">
-              <div className="service-card">
-                <div className="service-icon">
-                  <i className="fas fa-laptop-code" />
-                </div>
-                <h3>Software Development</h3>
-                <p>
-                  Custom software solutions tailored to your business needs,
-                  built with modern technologies and best practices.
-                </p>
-              </div>
-              <div className="service-card">
-                <div className="service-icon">
-                  <i className="fas fa-paint-brush" />
-                </div>
-                <h3>UI/UX Design</h3>
-                <p>
-                  Creating intuitive, user-friendly interfaces that enhance user
-                  experience and drive engagement.
-                </p>
-              </div>
-              <div className="service-card">
-                <div className="service-icon">
-                  <i className="fas fa-chart-line" />
-                </div>
-                <h3>Software Analytics</h3>
-                <p>
-                  Data-driven insights to optimize your software performance and
-                  make informed business decisions.
-                </p>
-              </div>
-              <div className="service-card">
-                <div className="service-icon">
-                  <i className="fas fa-mobile-alt" />
-                </div>
-                <h3>Mobile Development</h3>
-                <p>
-                  Native and cross-platform mobile applications for iOS and
-                  Android that deliver exceptional experiences.
-                </p>
-              </div>
-              <div className="service-card">
-                <div className="service-icon">
-                  <i className="fas fa-graduation-cap" />
-                </div>
-                <h3>Training &amp; Mentorship</h3>
-                <p>
-                  Comprehensive coding courses and mentorship programs to
-                  develop the next generation of developers.
-                </p>
-              </div>
-              <div className="service-card">
-                <div className="service-icon">
-                  <i className="fas fa-cloud" />
-                </div>
-                <h3>Cloud Solutions</h3>
-                <p>
-                  Scalable cloud infrastructure and services to support your
-                  business growth and digital transformation.
-                </p>
-              </div>
+              {                             //OUR JOINED INSTITUTES
+                institutes.length > 0 && institutes.map((institute) => {
+                  return (
+                    // <Link href={`/courses`} >
+                    <div key={institute.id} className="service-card">
+                      <div className="service-icon">
+                        <i className="fas fa-laptop-code" />
+                      </div>
+                      <h3>{institute.instituteName}</h3>
+                      <p>
+                        Custom software solutions tailored to your business needs,
+                        built with modern technologies and best practices.
+                      </p>
+                      <p>Mobile no: {institute.institutePhoneNumber}</p>
+                      <Link href={`/courses/${institute.instituteNumber}`}>
+                        <button type="submit" className="btn">
+                          View Courses
+                        </button>
+                      </Link>
+                    </div>
+                    // </Link>
+                  )
+                })
+              }
             </div>
           </div>
         </section>

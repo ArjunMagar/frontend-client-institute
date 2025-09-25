@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Status } from "../global/types";
 import API from "@/lib/http";
-import { IinstituteState } from "./instituteSlice.types";
+import { Iinstitutes, IinstituteState } from "./instituteSlice.types";
 import { Iinstitute } from "@/app/institute/institute.types";
 import { AppDispatch } from "../store";
 
-const initialState: IinstituteState = {
 
+const initialState: IinstituteState = {
+    institutes: [],
     status: Status.Loading,
 };
 
@@ -17,11 +18,14 @@ const instituteSlice = createSlice({
         setStatus(state: IinstituteState, action: PayloadAction<Status>) {
             state.status = action.payload;
         },
+        setInstitute(state:IinstituteState,action:PayloadAction<Iinstitutes[]>){
+            state.institutes = action.payload;
+        }
 
     },
 });
 
-export const { setStatus } = instituteSlice.actions;
+export const { setStatus,setInstitute } = instituteSlice.actions;
 export default instituteSlice.reducer;
 
 export function createInstitute(data: Iinstitute, token: string) {
@@ -34,6 +38,24 @@ export function createInstitute(data: Iinstitute, token: string) {
             });
             if (response.status === 200) {
                 dispatch(setStatus(Status.Success));
+            } else {
+                dispatch(setStatus(Status.Error));
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch(setStatus(Status.Error));
+        }
+    };
+}
+
+export function getInstitutes() {
+    return async function createInstituteThunk(dispatch: AppDispatch) {
+        try {
+            const response = await API.get("/student/institute");
+            console.log(response.data.data, "result")
+            if (response.status === 200) {
+                dispatch(setStatus(Status.Success));
+                dispatch(setInstitute(response.data.data))
             } else {
                 dispatch(setStatus(Status.Error));
             }
