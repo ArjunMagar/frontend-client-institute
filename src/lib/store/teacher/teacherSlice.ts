@@ -71,11 +71,11 @@ export function createTeacher(token:string,data:ITeacher){
             })
             if(response.status === 201){
                 dispatch(setStatus(Status.Success))
-                dispatch(addTeacher(response.data.data))
+                dispatch(addTeacher(response.data.data[0]))
             }else{
                 dispatch(setStatus(Status.Error))
             }
-            console.log(response,"data........")
+            console.log(response.data.data[0],"arjun kumar pun")
         } catch (error) {
             console.log(error)
               dispatch(setStatus(Status.Error))

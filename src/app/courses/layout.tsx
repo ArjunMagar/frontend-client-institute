@@ -2,7 +2,7 @@
 import HomePageLayout from "@/components/homepagelayout/HomePageLayout";
 
 
-function SubRootLayout({
+function CourseLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -13,4 +13,4 @@ function SubRootLayout({
   return <HomePageLayout>{children}</HomePageLayout>;
 }
 
-export default SubRootLayout;
+export default CourseLayout;

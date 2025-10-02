@@ -53,6 +53,10 @@ function Home() {
     setDToken(undefined); //update state
   };
 
+  const handleOpenNewPage = () => {
+    window.open("http://localhost:3001/auth/login", "_blank"); // opens in new tab
+  };
+
 
   return (
     <>
@@ -81,10 +85,11 @@ function Home() {
           }}
         />
         {/* Header */}
-        <header>
+        <header style={{ display: "flex", justifyContent: "space-between" }}>
           <div
             className="container header-container"
-            style={{ display: "flex", justifyContent: "space-between" }}
+            style={{ display: "flex", justifyContent: "space-evenly" }}
+            id="nav-vertical"
           >
             <a href="#" className="logo">
               <div className="logo-text">
@@ -102,7 +107,7 @@ function Home() {
                 </li>
                 <li>
                   <a href="#services" className="text-[18px]">
-                    Services
+                    Institutes
                   </a>
                 </li>
                 <li>
@@ -120,35 +125,39 @@ function Home() {
                     Contact
                   </a>
                 </li>
-                {DecodedToken ? (
-                  <li>
-                    <a onClick={handleLogout} href="" className="btn">
-                      Logout
-                    </a>
-                  </li>
-                ) : (
-                  <li>
-                    <Link href="/auth/login" className="btn">
-                      Login
-                    </Link>
-                  </li>
-                )}
+
               </ul>
             </nav>
             {/* search bar */}
-            <span className="nav-search">
-              <input type="text" placeholder="Search..." />
-              <button type="button">
-                <i className="fas fa-search"></i>
-              </button>
+            <span className="nav-search" id="nav-subvertical" >
+              <Link href={``}>
+                <button type="submit" className="btn">
+                  Student
+                </button>
+              </Link>
+              <Link href={``}>
+                <button type="submit" className="btn" onClick={handleOpenNewPage}>
+                  Teacher
+                </button>
+              </Link>
+              {DecodedToken ? (
+                <a onClick={handleLogout} href="" className="btn" id="btn">
+                  Logout
+                </a>
+              ) : (
+                <Link href="/auth/login" className="btn" >
+                  Login
+                </Link>
+              )}
             </span>
-            {/* Mobile Toggle Button */}
-            <div
-              className="mobile-toggle"
-              onClick={() => setNavOpen(!isNavOpen)}
-            >
-              <i className="fas fa-bars" />
-            </div>
+
+          </div>
+          {/* Mobile Toggle Button */}
+          <div
+            className="mobile-toggle" style={{ paddingRight: "3px" }}
+            onClick={() => setNavOpen(!isNavOpen)}
+          >
+            <i className="fas fa-bars" />
           </div>
         </header>
         {/* Hero Section */}
@@ -156,19 +165,19 @@ function Home() {
           <div className="container">
             <div className="hero-content">
               <h1>
-                Launch your <span>online Educational Institute</span> within few
+                Launch your <span>Online Educational Institute</span> within few
                 minutes.
               </h1>
               <p>
                 Build a LMS website, manage your all digital study contents and
-                deliver all over Nepal with DigitalPathshala
+                deliver all over Nepal through Our DigitalPathshala Platform
               </p>
               <div className="hero-btns">
                 <a href="#services" className="btn">
-                  Our Services
+                  Our Joined Institutes
                 </a>
-                <a href="#contact" className="btn btn-outline">
-                  Student Portal
+                <a href="#portfolio" className="btn btn-outline">
+                  Our Projects
                 </a>
               </div>
             </div>
@@ -185,7 +194,7 @@ function Home() {
               ) : (
                 <Link href={"/auth/register"}>
                   <div className="btn btn-outline">
-                    Please! Signup to Create Institute
+                    Please! Signup to Create Institute / to enroll Courses
                   </div>
                 </Link>
               )}

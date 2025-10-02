@@ -29,7 +29,7 @@ function Modal({ closeModal }: ModalProps) {
         teacherPhoto: ""
 
     });
-    console.log(data, "Data.........");
+    // console.log(data, "Data.........");
     // const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     //     const { name, value } = e.target
     //     setData({

@@ -56,6 +56,7 @@ export function getInstitutes() {
             if (response.status === 200) {
                 dispatch(setStatus(Status.Success));
                 dispatch(setInstitute(response.data.data))
+                dispatch(setStatus(Status.Loading))
             } else {
                 dispatch(setStatus(Status.Error));
             }

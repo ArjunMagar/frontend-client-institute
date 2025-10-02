@@ -117,14 +117,14 @@ export function fetchInstituteCourses(instituteId: string) {
         try {
             const response = await API.get(`/student/institute/${instituteId}/courses`)
 
-            console.log(response,"Resultaaa")
-            // if(response.status === 200){
-            //     dispatch(setStatus(Status.Success))
-            //     dispatch(setCourse(response.data.data))
-            //     dispatch(resetStatus())
-            // }else{
-            //     dispatch(setStatus(Status.Error))
-            // }
+            // console.log(response,"Resultaaa")
+            if(response.status === 200){
+                dispatch(setStatus(Status.Success))
+                dispatch(setCourse(response.data.data))
+                dispatch(resetStatus())
+            }else{
+                dispatch(setStatus(Status.Error))
+            }
           
         } catch (error) {
             console.log(error)

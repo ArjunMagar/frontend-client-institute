@@ -49,6 +49,12 @@ export default function HomePageLayout({
         localStorage.removeItem("token"); //delete from storage
         setDToken(undefined); //update state
     };
+
+    const handleOpenNewPage = () => {
+          window.open("http://localhost:3001", "_blank"); // opens in new tab
+    };
+
+
     return (
         <>
             <div>
@@ -76,16 +82,17 @@ export default function HomePageLayout({
                     }}
                 />
                 {/* Header */}
-                <header>
+                <header style={{ display: "flex", justifyContent: "space-between" }}>
                     <div
                         className="container header-container"
-                        style={{ display: "flex", justifyContent: "space-between" }}
+                        style={{ display: "flex", justifyContent: "space-evenly" }}
+                        id="nav-vertical"
                     >
-                        <a href="#" className="logo">
+                        <Link href="/" className="logo">
                             <div className="logo-text">
                                 Digital<span>Pathshala</span>
                             </div>
-                        </a>
+                        </Link>
 
                         {/* Nav */}
                         <nav className={isNavOpen ? "active" : ""}>
@@ -97,7 +104,7 @@ export default function HomePageLayout({
                                 </li>
                                 <li>
                                     <a href="#services" className="text-[18px]">
-                                        Services
+                                        Institutes
                                     </a>
                                 </li>
                                 <li>
@@ -115,231 +122,42 @@ export default function HomePageLayout({
                                         Contact
                                     </a>
                                 </li>
-                                {DecodedToken ? (
-                                    <li>
-                                        <a onClick={handleLogout} href="" className="btn">
-                                            Logout
-                                        </a>
-                                    </li>
-                                ) : (
-                                    <li>
-                                        <Link href="/auth/login" className="btn">
-                                            Login
-                                        </Link>
-                                    </li>
-                                )}
+
                             </ul>
                         </nav>
                         {/* search bar */}
-                        <span className="nav-search">
-                            <input type="text" placeholder="Search..." />
-                            <button type="button">
-                                <i className="fas fa-search"></i>
-                            </button>
+                        <span className="nav-search" id="nav-subvertical" >
+                            <Link href={``}>
+                                <button type="submit" className="btn">
+                                    Student
+                                </button>
+                            </Link>
+                            <Link href="">
+                                <button type="submit" className="btn" onClick={handleOpenNewPage} >
+                                    Teacher
+                                </button>
+                            </Link>
+                            {DecodedToken ? (
+                                <a onClick={handleLogout} href="" className="btn" id="btn">
+                                    Logout
+                                </a>
+                            ) : (
+                                <Link href="/auth/login" className="btn" >
+                                    Login
+                                </Link>
+                            )}
                         </span>
-                        {/* Mobile Toggle Button */}
-                        <div
-                            className="mobile-toggle"
-                            onClick={() => setNavOpen(!isNavOpen)}
-                        >
-                            <i className="fas fa-bars" />
-                        </div>
+
+                    </div>
+                    {/* Mobile Toggle Button */}
+                    <div
+                        className="mobile-toggle" style={{ paddingRight: "3px" }}
+                        onClick={() => setNavOpen(!isNavOpen)}
+                    >
+                        <i className="fas fa-bars" />
                     </div>
                 </header>
-
                 {children}
-
-                {/* About Section */}
-                <section id="about" className="about">
-                    <div className="container">
-                        <h2>About Us</h2>
-                        <div className="about-content">
-                            <div className="about-text">
-                                <h3>We&apos;re Passionate About Technology</h3>
-                                <p>
-                                    A Code Master Academy was founded by Mfuranziza Dusabe Hamza
-                                    with a mission to bridge the gap between technology education
-                                    and industry needs. We believe in empowering individuals and
-                                    businesses through innovative software solutions and
-                                    comprehensive training.
-                                </p>
-                                <p>
-                                    Our team of experienced developers, designers, and educators
-                                    are dedicated to delivering exceptional results and helping
-                                    our clients achieve their digital transformation goals.
-                                </p>
-                                <div className="skills">
-                                    <div className="skill-bar">
-                                        <div className="skill-info">
-                                            <span>Web Development</span>
-                                            <span>95%</span>
-                                        </div>
-                                        <div className="skill-progress">
-                                            <span style={{ width: "95%" }} />
-                                        </div>
-                                    </div>
-                                    <div className="skill-bar">
-                                        <div className="skill-info">
-                                            <span>Mobile Development</span>
-                                            <span>90%</span>
-                                        </div>
-                                        <div className="skill-progress">
-                                            <span style={{ width: "90%" }} />
-                                        </div>
-                                    </div>
-                                    <div className="skill-bar">
-                                        <div className="skill-info">
-                                            <span>UI/UX Design</span>
-                                            <span>85%</span>
-                                        </div>
-                                        <div className="skill-progress">
-                                            <span style={{ width: "85%" }} />
-                                        </div>
-                                    </div>
-                                    <div className="skill-bar">
-                                        <div className="skill-info">
-                                            <span>Cloud Solutions</span>
-                                            <span>80%</span>
-                                        </div>
-                                        <div className="skill-progress">
-                                            <span style={{ width: "80%" }} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="about-image">
-                                <div
-                                    style={{
-                                        background: "linear-gradient(135deg, #8b5cf6, #2563eb)",
-                                        width: "100%",
-                                        height: 400,
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        color: "white",
-                                        fontSize: "1.5rem",
-                                        padding: 20,
-                                        textAlign: "center",
-                                    }}
-                                >
-                                    Empowering Developers, Transforming Businesses
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                {/* Contact Section */}
-                <section id="contact" className="contact">
-                    <div className="container">
-                        <h2>Contact Us</h2>
-                        <div className="contact-container">
-                            <div className="contact-info">
-                                <h3>Get In Touch</h3>
-                                <p>
-                                    Have a project in mind or want to learn more about our
-                                    training programs? Reach out to us!
-                                </p>
-                                <div className="contact-item">
-                                    <div className="contact-icon">
-                                        <i className="fas fa-map-marker-alt" />
-                                    </div>
-                                    <div>
-                                        <h4>Location</h4>
-                                        <p>Rubavu, Rwanda</p>
-                                    </div>
-                                </div>
-                                <div className="contact-item">
-                                    <div className="contact-icon">
-                                        <i className="fas fa-envelope" />
-                                    </div>
-                                    <div>
-                                        <h4>Email</h4>
-                                        <p>mfuranzizahamza@gmail.com</p>
-                                    </div>
-                                </div>
-                                <div className="contact-item">
-                                    <div className="contact-icon">
-                                        <i className="fas fa-phone" />
-                                    </div>
-                                    <div>
-                                        <h4>Phone</h4>
-                                        <p>+250 796 132 866</p>
-                                    </div>
-                                </div>
-                                <div className="social-links">
-                                    <a href="#">
-                                        <i className="fab fa-facebook-f" />
-                                    </a>
-                                    <a href="#">
-                                        <i className="fab fa-twitter" />
-                                    </a>
-                                    <a href="#">
-                                        <i className="fab fa-instagram" />
-                                    </a>
-                                    <a href="#">
-                                        <i className="fab fa-linkedin-in" />
-                                    </a>
-                                    <a href="#">
-                                        <i className="fab fa-github" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="contact-form">
-                                <h3 id="hire">Hire Us</h3>
-                                <form className="work-request">
-                                    <div className="form-group">
-                                        <label htmlFor="name">Full Name</label>
-                                        <input type="text" id="name" placeholder="Your Name" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="email">Email Address</label>
-                                        <input type="email" id="email" placeholder="Your Email" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="services">Services Needed</label>
-                                        <div className="services-options">
-                                            <div className="service-option">
-                                                <input type="checkbox" id="service1" />
-                                                <label htmlFor="service1">Software Development</label>
-                                            </div>
-                                            <div className="service-option">
-                                                <input type="checkbox" id="service2" />
-                                                <label htmlFor="service2">UI/UX Design</label>
-                                            </div>
-                                            <div className="service-option">
-                                                <input type="checkbox" id="service3" />
-                                                <label htmlFor="service3">Mobile App</label>
-                                            </div>
-                                            <div className="service-option">
-                                                <input type="checkbox" id="service4" />
-                                                <label htmlFor="service4">Web Development</label>
-                                            </div>
-                                            <div className="service-option">
-                                                <input type="checkbox" id="service5" />
-                                                <label htmlFor="service5">Training</label>
-                                            </div>
-                                            <div className="service-option">
-                                                <input type="checkbox" id="service6" />
-                                                <label htmlFor="service6">Other</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="message">Project Details</label>
-                                        <textarea
-                                            id="message"
-                                            placeholder="Tell us about your project..."
-                                            defaultValue={""}
-                                        />
-                                    </div>
-                                    <button type="submit" className="btn">
-                                        Send Request
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
                 {/* Footer */}
                 <footer>
                     <div className="container">
