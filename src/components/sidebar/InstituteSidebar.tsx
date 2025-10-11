@@ -12,45 +12,45 @@ function InstituteSidebar() {
 
   return (
     <>
-      <div className="fixed inset-y-0 left-0 w-64 bg-cordes-dark shadow-xl z-50 bg-blue-800">
-        <div className="flex items-center justify-center h-16 bg-cordes-blue bg-blue-900">
+      <div className="fixed inset-y-0 left-0 w-64 bg-cordes-dark shadow-xl z-50 bg-blue-700">
+        <div className="flex items-center justify-center h-16 bg-cordes-blue bg-blue-800">
           <div className="flex items-center space-x-3">
             <span className="text-white text-xl font-bold">
               Institute Panel
             </span>
           </div>
         </div>
-        <nav className="mt-8 px-4">
+        <div className="mt-8 px-4">
           <div className="space-y-2">
             <Link
               href="/institute/dashboard"
-              className="flex items-center px-4 py-3 text-gray-200 hover:bg-gray-700 hover:text-white rounded-lg transition-colors group font-bold "
+              className="flex items-center px-4 py-3 text-gray-200 hover:bg-blue-900 hover:text-white rounded-lg transition duration-300 group font-bold "
             >
               <i className="fas fa-home mr-3 text-cordes-accent group-hover:text-white" />
               Dashboard
             </Link>
             <Link
               href="/institute/dashboard/category"
-              className="flex items-center px-4 py-3 text-gray-200 hover:bg-gray-700 hover:text-white rounded-lg transition-colors group font-bold"
+              className="flex items-center px-4 py-3 text-gray-200 hover:bg-blue-900 hover:text-white rounded-lg transition duration-300 group font-bold"
             >
               <i className="fas fa-users mr-3 text-gray-400 group-hover:text-white" />
               Category
             </Link>
             <Link
               href="/institute/dashboard/course"
-              className="flex items-center px-4 py-3 text-gray-200 hover:bg-gray-700 hover:text-white rounded-lg transition-colors group font-bold"
+              className="flex items-center px-4 py-3 text-gray-200 hover:bg-blue-900 hover:text-white rounded-lg transition duration-300 group font-bold"
             >
               <i className="fas fa-chart-bar mr-3 text-gray-400 group-hover:text-white" />
               Course
             </Link>
             <Link
               href="/institute/dashboard/teacher"
-              className="flex items-center px-4 py-3 text-gray-200 hover:bg-gray-700 hover:text-white rounded-lg transition-colors group font-bold"
+              className="flex items-center px-4 py-3 text-gray-200 hover:bg-blue-900 hover:text-white rounded-lg transition duration-300 group font-bold"
             >
               <i className="fas fa-shopping-cart mr-3 text-gray-400 group-hover:text-white" />
               Teacher
             </Link>
-            <a
+            {/* <a
               href="#"
               className="flex items-center px-4 py-3 text-gray-200 hover:bg-gray-700 hover:text-white rounded-lg transition-colors group font-bold"
             >
@@ -63,9 +63,9 @@ function InstituteSidebar() {
             >
               <i className="fas fa-cog mr-3 text-gray-400 group-hover:text-white" />
               Settings
-            </a>
+            </a> */}
           </div>
-        </nav>
+        </div>
         <div className="absolute bottom-4 left-4 right-4">
           <div className="bg-gray-800 rounded-lg p-4">
             <div className="flex items-center space-x-3">
@@ -75,7 +75,7 @@ function InstituteSidebar() {
                 className="w-10 h-10 rounded-full"
               />
               <div>
-                <a onClick={handleLogout} className="text-white hover:text-red-500 text-lg font-bold cursor-pointer">Logout</a>
+                <a onClick={handleLogout} className="text-white hover:text-red-700 text-lg font-bold cursor-pointer">Logout</a>
                 <p className="text-gray-400 text-sm"> Institute Administrator</p>
               </div>
             </div>

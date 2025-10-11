@@ -100,7 +100,7 @@
   background: var(--primary);
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 7px 15px;
   border-radius: 30px;
   cursor: pointer;
 }

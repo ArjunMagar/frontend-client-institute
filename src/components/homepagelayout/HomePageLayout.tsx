@@ -4,12 +4,17 @@ import { IDecodedToken } from "@/app/institute/institute.types";
 import { jwtDecode } from "jwt-decode";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import CartIcon from "../cart/Cart";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { fetchCarts } from "@/lib/store/cart/cartSlice";
 
 export default function HomePageLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const {items} = useAppSelector((store)=>store.cart)
+    const dispatch = useAppDispatch()
     const [DecodedToken, setDToken] = useState<IDecodedToken>()
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -20,7 +25,11 @@ export default function HomePageLayout({
             } catch (error) {
                 console.log(error);
             }
+
+            dispatch(fetchCarts(token))
         }
+
+
     }, []);
 
     const [isNavOpen, setNavOpen] = useState(false);
@@ -48,10 +57,11 @@ export default function HomePageLayout({
     const handleLogout = () => {
         localStorage.removeItem("token"); //delete from storage
         setDToken(undefined); //update state
+        window.location.reload();
     };
 
     const handleOpenNewPage = () => {
-          window.open("http://localhost:3001", "_blank"); // opens in new tab
+        window.open("http://localhost:3001/auth/login", "_blank"); // opens in new tab
     };
 
 
@@ -109,7 +119,7 @@ export default function HomePageLayout({
                                 </li>
                                 <li>
                                     <a href="#portfolio" className="text-[18px]">
-                                        Portfolio
+                                        Projects
                                     </a>
                                 </li>
                                 <li>
@@ -125,7 +135,7 @@ export default function HomePageLayout({
 
                             </ul>
                         </nav>
-                        {/* search bar */}
+                        {/* nav button bar */}
                         <span className="nav-search" id="nav-subvertical" >
                             <Link href={``}>
                                 <button type="submit" className="btn">
@@ -138,14 +148,17 @@ export default function HomePageLayout({
                                 </button>
                             </Link>
                             {DecodedToken ? (
-                                <a onClick={handleLogout} href="" className="btn" id="btn">
+                                <button onClick={handleLogout} className="btn" id="btn">
                                     Logout
-                                </a>
+                                </button>
                             ) : (
-                                <Link href="/auth/login" className="btn" >
-                                    Login
+                                <Link href="/auth/login" >
+                                    <button type="submit" className="btn" >
+                                        Login
+                                    </button>
                                 </Link>
                             )}
+                            <CartIcon itemCount={items.length} />
                         </span>
 
                     </div>
@@ -157,6 +170,7 @@ export default function HomePageLayout({
                         <i className="fas fa-bars" />
                     </div>
                 </header>
+                {/* Institutes' Courses  */}
                 {children}
                 {/* Footer */}
                 <footer>

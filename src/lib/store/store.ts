@@ -4,14 +4,16 @@ import instituteSlice  from "./institute/instituteSlice";
 import categorySlice from "./category/categorySlice"
 import courseSlice from "./course/courseSlice"
 import teacherSlice from "./teacher/teacherSlice"
+import cartSlice from "./cart/cartSlice"
 export const makeStore = () => {
     return configureStore({
       reducer: {
         auth: authSlice,
         institute:instituteSlice,
         category: categorySlice,
-        courses:courseSlice,
-        teachers:teacherSlice
+        course:courseSlice,
+        teacher:teacherSlice,
+        cart:cartSlice
   
       },
     })

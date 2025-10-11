@@ -132,3 +132,24 @@ export function fetchInstituteCourses(instituteId: string) {
         }
     }
 }
+
+export function fetchInstituteCourse(instituteId: string,courseId:string) {
+    return async function fetchCoursesThunk(dispatch: AppDispatch) {
+        try {
+            const response = await API.get(`/student/institute/${instituteId}/courses/${courseId}`)
+
+            // console.log(response,"Resultaaa")
+            if(response.status === 200){
+                dispatch(setStatus(Status.Success))
+                dispatch(setCourse(response.data.data))
+                dispatch(resetStatus())
+            }else{
+                dispatch(setStatus(Status.Error))
+            }
+          
+        } catch (error) {
+            console.log(error)
+            dispatch(setStatus(Status.Error))
+        }
+    }
+}

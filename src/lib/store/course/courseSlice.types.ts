@@ -14,6 +14,7 @@ export interface ICourse extends Icourse {
     courseThumbnail: string,
     categoryName: string,
     categoryDescription: string,
+    teacherName?:string
     createdAt: string,
     updatedAt: string
 }

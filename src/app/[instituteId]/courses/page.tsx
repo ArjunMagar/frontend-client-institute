@@ -1,6 +1,7 @@
 'use client'
 import { fetchInstituteCourses } from "@/lib/store/course/courseSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -9,7 +10,7 @@ function Course() {
 
     const params = useParams();
     const instituteId = params?.instituteId as string;
-    const { courses } = useAppSelector((store) => store.courses)
+    const { courses } = useAppSelector((store) => store.course)
 
     const dispatch = useAppDispatch()
 
@@ -30,16 +31,16 @@ function Course() {
                                 return (
                                     <div key={course.courseId} className="portfolio-item">
                                         <div className="portfolio-img">
-                                            <i className="fas fa-shopping-cart" />
+                                            <img className="w-full h-full object-cover" src={courses[0]?.courseThumbnail} alt="Product Image" />
                                         </div>
                                         <div className="portfolio-content">
                                             <h3>{course.courseName}</h3>
                                             <p>
-                                               {course.courseDescription}
+                                                {course.courseDescription}
                                             </p>
-                                            <a href="#" className="btn btn-outline">
-                                                View Details
-                                            </a>
+                                            <Link href={`/${instituteId}/courses/${course.courseId}`} className="btn btn-outline">
+                                                View Course Details
+                                            </Link>
                                         </div>
                                     </div>
                                 )

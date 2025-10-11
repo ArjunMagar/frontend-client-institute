@@ -10,7 +10,7 @@ type ModalProps = {
 };
 
 function Modal1({ id,closeModal1 }: ModalProps) {
-    const {status} = useAppSelector((store)=>store.courses)
+    const {status} = useAppSelector((store)=>store.course)
     const dispatch = useAppDispatch()            
    
     const deleteCour = () =>{

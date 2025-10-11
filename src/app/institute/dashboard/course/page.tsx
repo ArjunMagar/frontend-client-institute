@@ -6,7 +6,7 @@ import Modal from "./components/modal/Modal";
 import Modal1 from "./components/modal/Modal1";
 
 function Course() {
-  const { courses } = useAppSelector((store) => store.courses);
+  const { courses } = useAppSelector((store) => store.course);
   const dispatch = useAppDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

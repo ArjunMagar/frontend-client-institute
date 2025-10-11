@@ -13,7 +13,7 @@ type ModalProps = {
 
 function Modal({ closeModal }: ModalProps) {
     const { category } = useAppSelector((store) => store.category);
-    const { status } = useAppSelector((store) => store.courses)
+    const { status } = useAppSelector((store) => store.course)
     const dispatch = useAppDispatch();
 
     const [loading, setLoading] = useState(false)
@@ -89,7 +89,7 @@ function Modal({ closeModal }: ModalProps) {
                 ></div>
                 {/* Modal Content */}
                 <div
-                    className="bg-white w-full max-w-2xl mx-4 p-6 rounded-lg shadow-lg relative"
+                    className="bg-white w-full max-w-2xl mx-4 p-6 rounded-lg shadow-lg relative max-h-[95vh] overflow-y-auto"
                     onClick={(e) => e.stopPropagation()} // 👈 This prevents closing when clicking inside the modal
                 >
                     {/* Close Button */}

@@ -12,8 +12,8 @@ type ModalProps = {
 };
 
 function Modal({ closeModal }: ModalProps) {
-    const { courses } = useAppSelector((store) => store.courses);
-    const { status } = useAppSelector((store) => store.teachers);
+    const { courses } = useAppSelector((store) => store.course);
+    const { status } = useAppSelector((store) => store.teacher);
     const dispatch = useAppDispatch();
 
     const [loading, setLoading] = useState(false);
@@ -90,7 +90,7 @@ function Modal({ closeModal }: ModalProps) {
                 ></div>
                 {/* Modal Content */}
                 <div
-                    className="bg-white w-full max-w-2xl mx-4 p-6 rounded-lg shadow-lg relative"
+                    className="bg-white w-full max-w-2xl mx-4 p-6 rounded-lg shadow-lg relative max-h-[95vh] overflow-y-auto"
                     onClick={(e) => e.stopPropagation()} // 👈 This prevents closing when clicking inside the modal
                 >
                     {/* Close Button */}
@@ -265,7 +265,7 @@ function Modal({ closeModal }: ModalProps) {
                                 type="submit"
                                 className="bg-blue-600 text-white px-6 py-2.5 rounded-md font-semibold hover:bg-blue-700 transition"
                             >
-                                {loading ? "Creating..." : "Create teacher"}
+                                {loading ? "Creating..." : "Create Teacher"}
                             </button>
                         </div>
                     </form>

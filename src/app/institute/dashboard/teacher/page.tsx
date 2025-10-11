@@ -6,7 +6,7 @@ import Modal from "./components/modal/Modal";
 import Modal1 from "./components/modal/Modal1";
 
 function Teacher() {
-  const { teachers } = useAppSelector((store) => store.teachers);
+  const { teachers } = useAppSelector((store) => store.teacher);
   const dispatch = useAppDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)

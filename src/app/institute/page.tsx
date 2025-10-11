@@ -4,6 +4,7 @@ import { Iinstitute } from "./institute.types";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { createInstitute } from "@/lib/store/institute/instituteSlice";
 import { Status } from "@/lib/store/global/types";
+import HomePageLayout from "@/components/homepagelayout/HomePageLayout";
 
 function CreateInstitute() {
   const { status } = useAppSelector((state) => state.institute);
@@ -18,7 +19,7 @@ function CreateInstitute() {
     institutePanNo: "",
   });
   console.log(data, "form data...");
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setData({
       ...data,
@@ -36,12 +37,12 @@ function CreateInstitute() {
   };
 
   useEffect(() => {
- 
+
     if (status === Status.Success) {
       alert("Institute created successfully, Please! login again as institute");
       localStorage.removeItem("token")
       window.location.href = "/auth/login"
-    }else if(status === Status.Error) {
+    } else if (status === Status.Error) {
       alert("Institute already created !!!");
       window.location.href = "/institute/dashboard";
     }
@@ -50,111 +51,121 @@ function CreateInstitute() {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-        }}
-      >
-        <div className="relative p-10 bg-white rounded-2xl shadow-lg max-w-lg w-full">
-          {/* Decorative Background */}
-          <div className="absolute inset-0 -z-10 transform rotate-6 bg-blue-500 rounded-2xl" />
-          <h2 className="text-2xl font-semibold text-gray-800">
-            <span className="font-bold">Please ! fillup the form</span>
-          </h2>
-          <form onSubmit={handleSubmit} className="mt-5 space-y-4">
-            <div>
-              <label className="block font-medium text-gray-700">
-                Institute Name*
-              </label>
-              <input
-                onChange={handleChange}
-                name="instituteName"
-                type="text"
-                placeholder="Type Name"
-                className="w-full mt-1 p-3 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-medium text-gray-700">
-                Institue Email*
-              </label>
-              <input
-                onChange={handleChange}
-                name="instituteEmail"
-                type="email"
-                placeholder="Type Your Email"
-                className="w-full mt-1 p-3 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-medium text-gray-700">
-                Institute Phone No*
-              </label>
-              <input
-                onChange={handleChange}
-                name="institutePhoneNumber"
-                type="text"
-                placeholder="Type Phone No..."
-                className="w-full mt-1 p-3 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-medium text-gray-700">
-                Institute Address*
-              </label>
-              <input
-                onChange={handleChange}
-                name="instituteAddress"
-                type="text"
-                placeholder="Type Address..."
-                className="w-full mt-1 p-3 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-                required
-              />
-            </div>
-            <h2 className="text-lg font-semibold text-gray-800">
-              <span className="font-bold">Type One*</span>
-            </h2>
-            <div>
-              <label className="block font-medium text-gray-700">
-                Institute Vat No.
-              </label>
-              <input
-                onChange={handleChange}
-                name="instituteVatNo"
-                type="text"
-                placeholder="Type Vat No..."
-                className="w-full mt-1 p-3 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-            </div>
+      <HomePageLayout>
+        <section id="create-institute" className="py-16 bg-gray-50 rounded-2xl shadow-lg" style={{paddingTop:"110px"}}>
+          <div className="container mx-auto px-4 max-w-3xl p-8">
+            <div className="contact-form">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Create Your Institute</h3>
+              <form className="work-request space-y-6" onSubmit={handleSubmit}>
+                {/* Institute Name */}
+                <div className="form-group">
+                  <label htmlFor="instituteName" className="block text-sm font-medium text-gray-700 mb-1">
+                    Institute Name
+                  </label>
+                  <input
+                    type="text"
+                    id="instituteName"
+                    name="instituteName"
+                    onChange={handleChange}
+                    placeholder="Enter your institute name"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 transition"
+                    required
+                  />
+                </div>
 
-            <div>
-              <label className="block font-medium text-gray-700">
-                Institute Pan No.
-              </label>
-              <input
-                onChange={handleChange}
-                name="institutePanNo"
-                type="text"
-                placeholder="Type Pan No..."
-                className="w-full mt-1 p-3 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-            </div>
+                {/* Email */}
+                <div className="form-group">
+                  <label htmlFor="instituteEmail" className="block text-sm font-medium text-gray-700 mb-1">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="instituteEmail"
+                    name="instituteEmail"
+                    onChange={handleChange}
+                    placeholder="example@domain.com"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 transition"
+                    required
+                  />
+                </div>
 
-            <button
-              type="submit"
-              className="w-full py-3 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
-            >
-              Create Institute
-            </button>
-          </form>
-        </div>
-      </div>
+                {/* Phone Number */}
+                <div className="form-group">
+                  <label htmlFor="institutePhoneNumber" className="block text-sm font-medium text-gray-700 mb-1">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="institutePhoneNumber"
+                    name="institutePhoneNumber"
+                    onChange={handleChange}
+                    placeholder="+977 9812345678"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 transition"
+                    required
+                  />
+                </div>
+
+                {/* Address */}
+                <div className="form-group">
+                  <label htmlFor="instituteAddress" className="block text-sm font-medium text-gray-700 mb-1">
+                    Address
+                  </label>
+                  <textarea
+                    id="instituteAddress"
+                    name="instituteAddress"
+                    rows={3}
+                    onChange={handleChange}
+                    placeholder="Enter your full address"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 transition"
+                    required
+                  />
+                </div>
+
+                {/* VAT No */}
+                <div className="form-group">
+                  <label htmlFor="instituteVatNo" className="block text-sm font-medium text-gray-700 mb-1">
+                    VAT Number
+                  </label>
+                  <input
+                    type="text"
+                    id="instituteVatNo"
+                    name="instituteVatNo"
+                    onChange={handleChange}
+                    placeholder="Enter VAT Number"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 transition"
+                    required
+                  />
+                </div>
+
+                {/* PAN No */}
+                <div className="form-group">
+                  <label htmlFor="institutePanNo" className="block text-sm font-medium text-gray-700 mb-1">
+                    PAN Number
+                  </label>
+                  <input
+                    type="text"
+                    id="institutePanNo"
+                    name="institutePanNo"
+                    onChange={handleChange}
+                    placeholder="Enter PAN Number"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 transition"
+                    required
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg shadow-md transition duration-150 ease-in-out"
+                  style={{ padding: "12px" }}
+                >
+                  Create Institute
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </HomePageLayout>
     </>
   );
 }

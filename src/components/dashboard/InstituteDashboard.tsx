@@ -1,5 +1,4 @@
 // components/dashboard/InstituteDashboard.tsx
-"use client";
 import InstituteSidebar from "../sidebar/InstituteSidebar";
 
 // only if it uses hooks like useState, useEffect, etc.
