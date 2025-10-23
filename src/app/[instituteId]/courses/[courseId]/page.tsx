@@ -1,17 +1,23 @@
 'use client'
-import { addCart } from "@/lib/store/cart/cartSlice";
+import { addCart, resetStatus } from "@/lib/store/cart/cartSlice";
 import { ICart } from "@/lib/store/cart/cartSlice.types";
 import { fetchInstituteCourse } from "@/lib/store/course/courseSlice";
+import { Status } from "@/lib/store/global/types";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Modal from "./components/modal/Modal";
 
 const CourseDetail = () => {
     const params = useParams();
     const instituteId = params?.instituteId as string;
     const courseId = params?.courseId as string;
     const { courses } = useAppSelector((store) => store.course)
+    const { status } = useAppSelector((store) => store.cart)
     const dispatch = useAppDispatch()
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
 
     const [data, setData] = useState<ICart>({
         courseId: "",
@@ -32,19 +38,36 @@ const CourseDetail = () => {
 
     const handleClick = () => {
         const token = localStorage.getItem("token");
-        if (!token) return alert("Please log in first");
+        if (!token) {
+            setModalMessage("Please ! log in first");
+            setIsModalOpen(true);
+            return
+        };
 
         dispatch(addCart(token, data));
-        alert("Course added to cart!");
+        setModalMessage("Course added to cart successfully!");
+        setIsModalOpen(true);
     };
+
+    useEffect(() => {
+        if (status === Status.Success) {
+            dispatch(resetStatus())
+
+        }
+    }, [status])
 
 
 
     return (
         <>
-            {/* Courses Section */}
+            {/* Course Details */}
             <section id="portfolio" className="portfolio">
-                <div className="container" style={{ paddingTop: "70px" }}>
+                <div className="container" style={{ paddingTop: "60px" }}>
+                    {isModalOpen && (
+                        <Modal onClose={() => setIsModalOpen(false)}>
+                            <p className="text-lg font-semibold mb-2">{modalMessage}</p>
+                        </Modal>
+                    )}
                     <h2>Course Details</h2>
                     <div className="portfolio-grid">
                         <div className="bg-gray-100 dark:bg-gray-800 py-8">

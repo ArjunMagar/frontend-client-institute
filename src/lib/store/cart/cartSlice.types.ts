@@ -7,10 +7,10 @@ export interface ICart {
     instituteId: string
 }
 
-export interface ICartItem {
-    course: ICourse
+export interface ICartItem extends ICourse {
+    cartId: string,
+    instituteId:string
 }
-
 
 export interface ICartState {
     items: ICartItem[],

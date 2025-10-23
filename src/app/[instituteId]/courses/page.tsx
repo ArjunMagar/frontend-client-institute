@@ -21,9 +21,9 @@ function Course() {
 
     return (
         <>
-            {/* Courses Section */}
+            {/* Course Section */}
             <section id="portfolio" className="portfolio">
-                <div className="container" style={{ paddingTop: "70px" }}>
+                <div className="container" style={{ paddingTop: "60px" }}>
                     <h2>Our Courses</h2>
                     <div className="portfolio-grid">
                         {

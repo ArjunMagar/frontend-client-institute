@@ -10,11 +10,11 @@ import { getInstitutes } from "@/lib/store/institute/instituteSlice";
 import HomePageLayout from "@/components/homepagelayout/HomePageLayout";
 
 function Home() {
-  const { role } = useAppSelector((store) => store.auth.user);
+  // const { role } = useAppSelector((store) => store.auth.user);
   const { institutes } = useAppSelector((store) => store.institute)
   const [DecodedToken, setDToken] = useState<IDecodedToken>()
   const dispatch = useAppDispatch();
- 
+
   useEffect(() => {
     dispatch(getInstitutes())
     const token = localStorage.getItem("token");
@@ -56,25 +56,30 @@ function Home() {
               className="hero-content"
               style={{ margin: "14px 0px 8px 0px" }}
             >
-              {DecodedToken ? (
+              {DecodedToken?.role === "student" ? (
                 <Link href={"/institute"}>
                   <div className="btn btn-outline">
-                    Click here to Create Institute
+                    Click! here to Create Institute
                   </div>
                 </Link>
-              ) : (
-                <Link href={"/auth/register"}>
-                  <div className="btn btn-outline">
-                    Please! Signup to Create Institute / to enroll Courses
-                  </div>
+              ) : DecodedToken?.role === "institute" ? (
+                <Link href="/institute/dashboard" className="btn btn-outline">
+                  Go to the Institute Dashboard
                 </Link>
-              )}
+              ) :
+                (
+                  <Link href={"/auth/register"}>
+                    <div className="btn btn-outline">
+                      Please! Signup to Create Institute / to enroll Courses
+                    </div>
+                  </Link>
+                )}
             </div>
-            <div className="hero-content">
+            {/* <div className="hero-content">
               {(role === "institute" || DecodedToken?.role === "institute") && (<Link href="/institute/dashboard" className="btn btn-outline">
                 Go to the Institute
               </Link>)}
-            </div>
+            </div> */}
           </div>
           <div className="hero-image">
             <div className="flex items-center justify-center ">
