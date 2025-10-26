@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Status } from "../global/types";
 import { AppDispatch } from "../store";
 import API from "@/lib/http";
-import { ICart, ICartItem , ICartState } from "./cartSlice.types";
+import { ICart, ICartItem, ICartState } from "./cartSlice.types";
 
 const initialState: ICartState = {
     items: [],
@@ -25,16 +25,19 @@ const cartSlice = createSlice({
         addItem(state: ICartState, action: PayloadAction<ICartItem>) {
             state.items.push(action.payload)
         },
-        removeItem(state:ICartState,action:PayloadAction<string>){
-            const index = state.items.findIndex((item)=>item.cartId ===action.payload)
-            if(index !== -1){
-                state.items.splice(index,1)
+        removeItem(state: ICartState, action: PayloadAction<string>) {
+            const index = state.items.findIndex((item) => item.cartId === action.payload)
+            if (index !== -1) {
+                state.items.splice(index, 1)
             }
+        },
+        removeItems(state: ICartState) {
+            state.items = []
         }
     }
 })
 
-export const { setStatus, resetStatus, setItems, addItem, removeItem } = cartSlice.actions
+export const { setStatus, resetStatus, setItems, addItem, removeItem, removeItems } = cartSlice.actions
 export default cartSlice.reducer
 
 export function fetchCarts(token: string) {
@@ -81,24 +84,47 @@ export function addCart(token: string, data: ICart) {
         }
     }
 }
-export function deleteCart(token:string,id:string){
-    return async function deleteCartThunk(dispatch:AppDispatch){
+export function deleteCart(token: string, id: string) {
+    return async function deleteCartThunk(dispatch: AppDispatch) {
         try {
-            const response = await API.delete('/student/cart/'+id,{
-                headers:{
+            const response = await API.delete('/student/cart/' + id, {
+                headers: {
                     Authorization: `${token}`,
                 },
             })
-            if(response.status === 200){
+            if (response.status === 200) {
                 dispatch(setStatus(Status.Success))
                 dispatch(removeItem(id))
-            }else{
+            } else {
                 dispatch(setStatus(Status.Error))
             }
-            console.log(response,"data........")
+            console.log(response, "data........")
         } catch (error) {
             console.log(error)
-              dispatch(setStatus(Status.Error))
+            dispatch(setStatus(Status.Error))
+        }
+    }
+}
+
+export function deleteCarts(token: string) {
+    return async function deleteCartsThunk(dispatch: AppDispatch) {
+        try {
+            const response = await API.delete('/student/cart/', {
+                headers: {
+                    Authorization: `${token}`,
+                },
+            })
+            if (response.status === 200) {
+                dispatch(setStatus(Status.Success))
+                dispatch(removeItems())
+                dispatch(resetStatus())
+            } else {
+                dispatch(setStatus(Status.Error))
+            }
+            console.log(response, "data........")
+        } catch (error) {
+            console.log(error)
+            dispatch(setStatus(Status.Error))
         }
     }
 }

@@ -2,7 +2,7 @@
 import HomePageLayout from "@/components/homepagelayout/HomePageLayout";
 
 
-function CourseLayout({
+function CartLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -13,4 +13,4 @@ function CourseLayout({
   return <HomePageLayout>{children}</HomePageLayout>;
 }
 
-export default CourseLayout;
+export default CartLayout;

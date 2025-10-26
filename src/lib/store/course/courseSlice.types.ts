@@ -10,6 +10,7 @@ export interface Icourse {
     categoryId: string,
 }
 export interface ICourse extends Icourse {
+    instituteId:string,
     courseId: string,
     courseThumbnail: string,
     categoryName: string,

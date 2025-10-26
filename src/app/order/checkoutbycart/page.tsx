@@ -1,19 +1,25 @@
 'use client'
-import { useAppSelector } from "@/lib/store/hooks";
-import { useState } from "react";
-import Modal1 from "../cart/components/modal/Modal1";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import Modal1 from "../../cart/components/modal/Modal1";
+import { createOrder, resetStatus } from "@/lib/store/order/orderSlice";
+import { Iorder } from "@/lib/store/order/orderSlice.types";
+import { Status } from "@/lib/store/global/types";
+import { deleteCarts } from "@/lib/store/cart/cartSlice";
+import Link from "next/link";
 
 
-const Checkout = () => {
+const CheckoutByCart = () => {
     const { items } = useAppSelector((store) => store.cart)
+    const { status } = useAppSelector((store) => store.order)
     const [isModalOpen1, setIsModalOpen1] = useState<boolean>(false);
     const [selectedId, setSelectedId] = useState<string | null>(null);
+    const dispatch = useAppDispatch()
 
     const openModal1 = (id: string) => {
         setSelectedId(id);
         setIsModalOpen1(true);
     };
-
     const closeModal1 = () => {
         setIsModalOpen1(false);
         setSelectedId(null);
@@ -24,16 +30,57 @@ const Checkout = () => {
     const TaxCharge = (13 / 100) * subTotal
     const Total = subTotal + TaxCharge
 
-    const orderDetails = items.map((item)=>{
-        return(
+    const orderDetails = items.map((item) => {
+        return (
             {
-                courseId:item.courseId,
-                instituteId:item.instituteId
+                courseId: item.courseId,
+                instituteId: item.instituteId
             }
         )
     })
+    const [data, setData] = useState<Iorder>({
+        whatsapp_no: "",
+        paymentMethod: "",
+        remarks: "",
+        amount: 0,
+        orderDetails: []
+    })
+    useEffect(() => {
+        setData((prev) => ({
+            ...prev,
+            amount: Total,
+            orderDetails: orderDetails,
 
-    console.log(orderDetails,"orederDtetatl")
+        }));
+    }, [items]);
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setData({
+            ...data,
+            [name]: value,
+        });
+    };
+    console.log(data, "data")
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const token = localStorage.getItem("token"); // get from localStorage or get from Redux
+
+        if (!token) return alert("Token not found");
+
+        dispatch(createOrder(data, token));
+    };
+
+
+    useEffect(() => {
+        if (status === Status.Success) {
+            const token = localStorage.getItem("token"); // get from localStorage or get from Redux
+            if (!token) return alert("Token not found");
+            dispatch(deleteCarts(token))
+            dispatch(resetStatus())
+        }
+    }, [status])
 
 
     return (
@@ -45,7 +92,8 @@ const Checkout = () => {
                     <div className="bg-gray-100 py-8">
                         <div className="container mx-auto px-4">
                             <h1 className="text-2xl font-semibold mb-4" style={{ fontSize: "24px" }}>Student Enrollment Details:</h1>
-                            <form action="">
+                            {items.length >0 && (
+                            <form action="" onSubmit={handleSubmit}>
                                 <div className="flex flex-col md:flex-row gap-4">
                                     <div className="md:w-3/4">
                                         <div className="bg-white rounded-lg shadow-md p-6 mb-4" style={{ padding: "24px", marginBottom: "16px" }}>
@@ -64,7 +112,7 @@ const Checkout = () => {
                                                                         type="tel"
                                                                         id="whatsapp_no"
                                                                         name="whatsapp_no"
-                                                                        // onChange={handleChange}
+                                                                        onChange={handleChange}
                                                                         placeholder="+977 9812345678"
                                                                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 transition"
                                                                         required
@@ -72,16 +120,17 @@ const Checkout = () => {
                                                                 </div>
                                                                 {/* PaymentMethod */}
                                                                 <div className="form-group">
-                                                                    <label htmlFor="paymentMethod" className="block text-sm font-medium text-gray-700 !mb-1">Country <span className="font-light">(Optional)</span></label>
+                                                                    <label htmlFor="paymentMethod" className="block text-sm font-medium text-gray-700 !mb-1">Payment <span className="font-light">(Optional)</span></label>
                                                                     <select
+                                                                        onChange={handleChange}
                                                                         name="paymentMethod"
                                                                         id="paymentMethod"
                                                                         className="h-[50px] rounded-[5px] text-s xs:text-sm w-full !px-4 !py-3 border border-gray-300 focus:ring-2 focus:ring-indigo-500 transition "
                                                                         required>
                                                                         <option hidden>Select</option>
-                                                                        <option value="syria">Esewa</option>
-                                                                        <option value="turkey">Khalti</option>
-                                                                        <option value="turkey">COD</option>
+                                                                        <option value="esewa">Esewa</option>
+                                                                        <option value="khalti">Khalti</option>
+                                                                        <option value="cod">COD</option>
                                                                     </select>
                                                                 </div>
 
@@ -96,7 +145,7 @@ const Checkout = () => {
                                                                         type="text"
                                                                         id="remarks"
                                                                         name="remarks"
-                                                                        // onChange={handleChange}
+                                                                        onChange={handleChange}
                                                                         placeholder="Remarks..."
                                                                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 transition"
                                                                         required
@@ -187,11 +236,15 @@ const Checkout = () => {
                                                 <span className="font-semibold">Total</span>
                                                 <span className="font-semibold">Rs: {Total}</span>
                                             </div>
-                                            <button className="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full btn" style={{ padding: "8px 16px", marginTop: "16px" }}>Click to Pay</button>
+                                            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full btn" style={{ padding: "8px 16px", marginTop: "16px" }}>Click to Pay</button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </form>) ||
+                           (<div className="flex flex-col md:flex-row gap-4 justify-center">
+                                    <Link href="/#services"><h3 className="btn">-Go to enroll InstituteCourses-</h3></Link>
+                                </div>)
+                            }
                         </div>
                     </div>
 
@@ -202,4 +255,4 @@ const Checkout = () => {
     );
 }
 
-export default Checkout;
+export default CheckoutByCart;

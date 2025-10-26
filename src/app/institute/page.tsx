@@ -18,7 +18,7 @@ function CreateInstitute() {
     instituteVatNo: "",
     institutePanNo: "",
   });
-  console.log(data, "form data...");
+  // console.log(data, "form data...");
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setData({

@@ -45,7 +45,7 @@ function Home() {
               </p>
               <div className="hero-btns">
                 <a href="#services" className="btn">
-                  Our Joined Institutes
+                  Let&apos;s enroll Our Courses
                 </a>
                 <a href="#portfolio" className="btn btn-outline">
                   Our Projects

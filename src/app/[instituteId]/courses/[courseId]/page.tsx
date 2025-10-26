@@ -4,7 +4,7 @@ import { ICart } from "@/lib/store/cart/cartSlice.types";
 import { fetchInstituteCourse } from "@/lib/store/course/courseSlice";
 import { Status } from "@/lib/store/global/types";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Modal from "./components/modal/Modal";
 
@@ -15,6 +15,7 @@ const CourseDetail = () => {
     const { courses } = useAppSelector((store) => store.course)
     const { status } = useAppSelector((store) => store.cart)
     const dispatch = useAppDispatch()
+    const router = useRouter()
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
@@ -49,6 +50,16 @@ const CourseDetail = () => {
         setIsModalOpen(true);
     };
 
+    const handleClickBuy = () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            setModalMessage("Please ! login first");
+            setIsModalOpen(true);
+            return
+        };
+        router.push(`/order/checkout?instituteId=${instituteId}&courseId=${courseId}`);
+    }
+
     useEffect(() => {
         if (status === Status.Success) {
             dispatch(resetStatus())
@@ -79,7 +90,7 @@ const CourseDetail = () => {
                                         </div>
                                         <div className="flex -mx-2 mb-4" style={{ paddingTop: "12px", marginTop: "14px" }}>
                                             <div className="w-1/2 px-2" style={{ marginRight: "12px" }}>
-                                                <button style={{ padding: "5px" }} className="w-full bg-blue-700 dark:bg-blue-400 text-white py-2 px-4 rounded-full font-bold hover:bg-blue-600 dark:hover:bg-blue-500">Buy Now</button>
+                                                <button onClick={handleClickBuy} style={{ padding: "5px" }} className="w-full bg-blue-700 dark:bg-blue-400 text-white py-2 px-4 rounded-full font-bold hover:bg-blue-600 dark:hover:bg-blue-500">Buy Now</button>
                                             </div>
                                             <div className="w-1/2 px-2" style={{ marginRight: "12px" }}>
                                                 <button onClick={handleClick} style={{ padding: "5px" }} className="w-full bg-orange-700 dark:bg-orange-400 text-white py-2 px-4 rounded-full font-bold hover:bg-orange-600 dark:hover:bg-orange-500">Add to Cart</button>

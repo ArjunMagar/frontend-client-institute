@@ -5,6 +5,7 @@ import categorySlice from "./category/categorySlice"
 import courseSlice from "./course/courseSlice"
 import teacherSlice from "./teacher/teacherSlice"
 import cartSlice from "./cart/cartSlice"
+import orderSlice from "./order/orderSlice"
 export const makeStore = () => {
     return configureStore({
       reducer: {
@@ -13,7 +14,8 @@ export const makeStore = () => {
         category: categorySlice,
         course:courseSlice,
         teacher:teacherSlice,
-        cart:cartSlice
+        cart:cartSlice,
+        order:orderSlice
   
       },
     })
