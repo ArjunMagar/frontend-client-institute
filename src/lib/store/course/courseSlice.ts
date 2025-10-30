@@ -153,3 +153,30 @@ export function fetchInstituteCourse(instituteId: string,courseId:string) {
         }
     }
 }
+
+// Student Apis
+
+export function fetchStudentCourses(token: string) {
+    return async function fetchStudentCoursesThunk(dispatch: AppDispatch) {
+        try {
+            const response = await API.get('/student/course', {
+                headers: {
+                    Authorization: `${token}`
+                }
+            })
+            if(response.status === 200){
+                dispatch(setStatus(Status.Success))
+                dispatch(setCourse(response.data.data))
+                dispatch(resetStatus())
+            }else{
+                dispatch(setStatus(Status.Error))
+            }
+          
+        } catch (error) {
+            console.log(error)
+            dispatch(setStatus(Status.Error))
+        }
+    }
+}
+
+

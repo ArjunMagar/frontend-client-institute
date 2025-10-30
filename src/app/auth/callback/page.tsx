@@ -22,17 +22,15 @@ function CallbackLogic() {
         dispatch(setStatus(Status.Success));
         dispatch(setToken(token));
         dispatch(setUser(user));
-        router.push("/");
+        router.replace("/");
       } catch (error) {
         console.error("User decode error:", error);
         alert("Something went wrong decoding user.");
       }
-    } else {
-      alert("Missing token or user data.");
     }
   }, [searchParams, dispatch, router]);
 
-  return <p>Logging you in...</p>;
+  return <p>Logging</p>;
 }
 
 export default function CallbackPage() {

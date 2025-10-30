@@ -57,7 +57,7 @@ const CourseDetail = () => {
             setIsModalOpen(true);
             return
         };
-        router.push(`/order/checkout?instituteId=${instituteId}&courseId=${courseId}`);
+        router.replace(`/order/checkout?instituteId=${instituteId}&courseId=${courseId}`);
     }
 
     useEffect(() => {

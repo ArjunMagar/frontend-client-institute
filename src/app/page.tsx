@@ -56,7 +56,7 @@ function Home() {
               className="hero-content"
               style={{ margin: "14px 0px 8px 0px" }}
             >
-              {DecodedToken?.role === "student" ? (
+              {DecodedToken?.role === "visitor" ? (
                 <Link href={"/institute"}>
                   <div className="btn btn-outline">
                     Click! here to Create Institute
@@ -65,6 +65,10 @@ function Home() {
               ) : DecodedToken?.role === "institute" ? (
                 <Link href="/institute/dashboard" className="btn btn-outline">
                   Go to the Institute Dashboard
+                </Link>
+              ) : DecodedToken?.role === "student" ? (
+                <Link href="/student/dashboard" className="btn btn-outline">
+                  Go to the Student Dashboard
                 </Link>
               ) :
                 (

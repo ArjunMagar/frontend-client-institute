@@ -42,9 +42,9 @@ export function createOrder(data: Iorder, token: string) {
                 dispatch(setStatus(Status.Success));
                
                 if(response.data.data.payment_url){
-                     window.location.href = response.data.data.payment_url
+                     window.location.replace(response.data.data.payment_url)
                 }else{
-                    window.location.href = response.data.data
+                    window.location.replace(response.data.data)
                 }
 
             } else {

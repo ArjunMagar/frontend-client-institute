@@ -1,17 +1,18 @@
-"use client"
-import HomePageLayout from "@/components/homepagelayout/HomePageLayout";
+"use client";
+
+import StudentDashboard from "@/components/dashboard/StudentDashboard";
 import { useEffect, useState } from "react";
-import { IDecodedToken } from "../institute/institute.types";
+import { IDecodedToken } from "../institute.types";
 import { jwtDecode } from "jwt-decode";
 import { redirect } from "next/navigation";
 
 
-function CheckoutLayout({
+function StudentLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -19,7 +20,7 @@ const [token, setToken] = useState<string | null>(null);
       try {
         const decoded: IDecodedToken = jwtDecode(token);
 
-        if (decoded.role !== "visitor" &&  decoded.role !== "student") {
+        if (decoded.role !== "student") {
           redirect("/");
         }
       } catch (error) {
@@ -31,8 +32,7 @@ const [token, setToken] = useState<string | null>(null);
     }
   }, []);
   if (!token) return <p>Loading...</p>;
-
-  return <HomePageLayout>{children}</HomePageLayout>;
+  return <StudentDashboard>{children}</StudentDashboard>;
 }
 
-export default CheckoutLayout;
+export default StudentLayout;
