@@ -41,7 +41,7 @@ function Home() {
               </h1>
               <p>
                 Build a LMS website, manage your all digital study contents and
-                deliver all over Nepal through Our DigitalPathshala Platform
+                deliver all over Nepal through Our e-learningSpace Platform.
               </p>
               <div className="hero-btns">
                 <a href="#services" className="btn">

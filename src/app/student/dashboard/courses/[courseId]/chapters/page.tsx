@@ -2,8 +2,8 @@
 
 import { fetchChapters } from "@/lib/store/chapter/chapterSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import {useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 
 
@@ -14,6 +14,7 @@ function StudentCourseChapter() {
     const instituteId = searchParams.get("instituteId");
     const { courseId } = useParams<{ courseId: string }>()
     const router = useRouter()
+    const [searchTerm, setSearchTerm] = useState<string>("")
 
     useEffect(() => {
         const token = localStorage.getItem("token")
@@ -21,6 +22,10 @@ function StudentCourseChapter() {
         if (!courseId || !instituteId) return
         dispatch(fetchChapters(token, courseId, instituteId))
     }, [courseId, instituteId, dispatch])
+
+    const filterChapters = chapters.filter((chapter) => chapter.chapterName.toLocaleLowerCase().includes(searchTerm.toLowerCase())
+        || chapter.id.toLocaleLowerCase().includes(searchTerm.toLowerCase()))
+
 
     return (
         <>
@@ -34,6 +39,7 @@ function StudentCourseChapter() {
                     <div className="flex flex-col md:flex-row justify-between items-center mb-6">
                         <div className="w-full md:w-1/3 mb-4 md:mb-0">
                             <input
+                                onChange={(e) => setSearchTerm(e.target.value)}
                                 type="text"
                                 placeholder="Search users..."
                                 className="w-full px-4 py-2 rounded-md border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -57,7 +63,6 @@ function StudentCourseChapter() {
                                     <th className="py-3 px-6 text-left">ChapterName</th>
                                     <th className="py-3 px-6 text-left">Level</th>
                                     <th className="py-3 px-6 text-left">Duration</th>
-                                    <th className="py-3 px-6 text-left">CourseId</th>
                                     <th className="py-3 px-6 text-left">CreatedAt</th>
                                     <th className="py-3 px-6 text-left">UpdatedAt</th>
                                     <th className="py-3 px-6 text-left">Lessons</th>
@@ -65,8 +70,8 @@ function StudentCourseChapter() {
                                 </tr>
                             </thead>
                             <tbody className="text-gray-600 text-sm">
-                                {chapters?.length > 0 &&
-                                    chapters?.map((chapter) => {
+                                {filterChapters?.length > 0 &&
+                                    filterChapters?.map((chapter) => {
                                         return (
                                             <tr
                                                 key={chapter.id}
@@ -84,10 +89,6 @@ function StudentCourseChapter() {
                                                 <td className="py-3 px-6 text-left">
                                                     {chapter.chapterDuration}
                                                 </td>
-                                                <td className="py-3 px-6 text-left">
-                                                    {chapter.courseId}
-                                                </td>
-
                                                 <td className="py-3 px-6 text-left">
                                                     {new Date(chapter.createdAt).toLocaleDateString()}
                                                 </td>
@@ -160,7 +161,13 @@ function StudentCourseChapter() {
                                                 </td>
                                             </tr>
                                         );
-                                    })}
+                                    }) ||
+                                    <tr>
+                                        <td colSpan={9} className="py-3 px-6 text-center">
+                                            Chapter empty !!!
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>

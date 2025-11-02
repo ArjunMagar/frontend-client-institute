@@ -12,7 +12,7 @@ function Course() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isModalOpen1, setIsModalOpen1] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-
+  const [searchTerm, setSearchTerm] = useState<string>("")
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -33,6 +33,10 @@ function Course() {
     setSelectedId(null);
   };
 
+  const filterCourses = courses.filter((course) => course.courseName.toLowerCase().includes(searchTerm.toLowerCase())
+    || course.coursePrice.toString().includes(searchTerm) || course.categoryName.toLowerCase().includes(searchTerm.toLowerCase())
+    || course.courseId.toLocaleLowerCase().includes(searchTerm.toLowerCase()))
+
   return (
     <>
       <div>
@@ -47,6 +51,7 @@ function Course() {
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <div className="w-full md:w-1/3 mb-4 md:mb-0">
               <input
+                onChange={(e) => setSearchTerm(e.target.value)}
                 type="text"
                 placeholder="Search users..."
                 className="w-full px-4 py-2 rounded-md border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -78,8 +83,8 @@ function Course() {
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm">
-                {courses.length > 0 &&
-                  courses.map((course) => {
+                {filterCourses.length > 0 &&
+                  filterCourses.map((course) => {
                     return (
                       <tr
                         key={course.courseId}

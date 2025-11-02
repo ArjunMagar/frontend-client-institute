@@ -16,25 +16,31 @@ const categorySlice = createSlice({
         setStatus(state: ICategoryState, action: PayloadAction<Status>) {
             state.status = action.payload
         },
-        resetStatus(state:ICategoryState) {
+        resetStatus(state: ICategoryState) {
             state.status = Status.Loading
         },
-        setCategory(state:ICategoryState, action: PayloadAction<ICategory[]>) {
+        setCategory(state: ICategoryState, action: PayloadAction<ICategory[]>) {
             state.category = action.payload
         },
-        addCategory(state:ICategoryState,action:PayloadAction<ICategory>){
+        addCategory(state: ICategoryState, action: PayloadAction<ICategory>) {
             state.category.push(action.payload)
         },
-       deleteCategories(state:ICategoryState, action:PayloadAction<string>) {
+        deleteCategories(state: ICategoryState, action: PayloadAction<string>) {
             const index = state.category.findIndex((category) => category.id == action.payload)
-            if(index !== -1){
-                state.category.splice(index,1)
+            if (index !== -1) {
+                state.category.splice(index, 1)
+            }
+        },
+        patchCategory(state: ICategoryState, action: PayloadAction<ICategory>) {
+            const index = state.category.findIndex((category) => category.id == action.payload.id)
+            if (index !== -1) {
+                state.category.splice(index,1,action.payload)
             }
         }
     }
 })
 
-export const { setStatus,resetStatus, setCategory,addCategory,deleteCategories } = categorySlice.actions
+export const { setStatus, resetStatus, setCategory, addCategory, deleteCategories,patchCategory } = categorySlice.actions
 export default categorySlice.reducer
 
 export function getCategory(token: string) {
@@ -50,7 +56,7 @@ export function getCategory(token: string) {
                 dispatch(setStatus(Status.Success))
                 dispatch(setCategory(response.data.data))
                 dispatch(resetStatus())
-            }else{
+            } else {
                 dispatch(setStatus(Status.Error))
             }
 
@@ -73,7 +79,7 @@ export function createCategory(token: string, data: { categoryName: string, cate
             if (response.status === 201) {
                 dispatch(setStatus(Status.Success))
                 dispatch(addCategory(response.data.data))
-            }else{
+            } else {
                 dispatch(setStatus(Status.Error))
             }
 
@@ -85,10 +91,10 @@ export function createCategory(token: string, data: { categoryName: string, cate
 }
 
 
-export function deleteCategory(token:string,id:string) {
+export function deleteCategory(token: string, id: string) {
     return async function deleteCategoryThunk(dispatch: AppDispatch) {
         try {
-            const response = await API.delete('/institute/category/'+id, {
+            const response = await API.delete('/institute/category/' + id, {
                 headers: {
                     Authorization: `${token}`
                 }
@@ -97,7 +103,31 @@ export function deleteCategory(token:string,id:string) {
             if (response.status === 200) {
                 dispatch(setStatus(Status.Success))
                 dispatch(deleteCategories(id))
-            }else{
+            } else {
+                dispatch(setStatus(Status.Error))
+            }
+
+        } catch (error) {
+            console.log(error)
+            dispatch(setStatus(Status.Error))
+        }
+    }
+}
+
+
+export function updateCategory(token: string, id: string, data: { categoryName: string, categoryDescription: string }) {
+    return async function updateCategoryThunk(dispatch: AppDispatch) {
+        try {
+            const response = await API.patch(`/institute/category/${id}`, data, {
+                headers: {
+                    Authorization: `${token}`
+                }
+            })
+            console.log(response)
+            if (response.status === 200) {
+                dispatch(setStatus(Status.Success))
+                dispatch(patchCategory(response.data.data))
+            } else {
                 dispatch(setStatus(Status.Error))
             }
 

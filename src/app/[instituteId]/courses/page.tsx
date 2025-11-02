@@ -31,7 +31,7 @@ function Course() {
                                 return (
                                     <div key={course.courseId} className="portfolio-item">
                                         <div className="portfolio-img">
-                                            <img className="w-full h-full object-cover" src={courses[0]?.courseThumbnail} alt="Product Image" />
+                                            <img className="w-full h-full object-cover" src={course?.courseThumbnail} alt="Product Image" />
                                         </div>
                                         <div className="portfolio-content">
                                             <h3>{course.courseName}</h3>

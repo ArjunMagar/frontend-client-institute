@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useCallback, useEffect, useState } from "react";
 import Modal from "./components/modal/Modal";
 import Modal1 from "./components/modal/Modal1";
+import Modal2 from "./components/modal/Modal2";
 
 function Category() {
   const { category } = useAppSelector((state) => state.category);
@@ -12,7 +13,8 @@ function Category() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isModalOpen1, setIsModalOpen1] = useState<boolean>(false);
-
+  const [isModalOpen2, setIsModalOpen2] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>("")
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -33,6 +35,21 @@ function Category() {
     setSelectedId(null);
   };
 
+  const openModal2 = (id: string) => {
+    setSelectedId(id);
+    setIsModalOpen2(true);
+  };
+
+  const closeModal2 = () => {
+    setIsModalOpen2(false);
+    setSelectedId(null);
+  };
+
+
+  const filterCategories = category.filter((category) => category.categoryName.toLocaleLowerCase().includes(searchTerm.toLowerCase())
+    || category.id.toLocaleLowerCase().includes(searchTerm.toLowerCase()))
+
+
   return (
     <>
       <div>
@@ -42,11 +59,13 @@ function Category() {
         <div className="container mx-auto px-4 py-8">
           {isModalOpen && <Modal closeModal={closeModal} />}
           {isModalOpen1 && <Modal1 id={selectedId} closeModal1={closeModal1} />}
+          {isModalOpen2 && <Modal2 id={selectedId} closeModal2={closeModal2} />}
           <h1 className="text-3xl font-bold text-center mb-8"> Category</h1>
           {/* Search and Add User (Static) */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <div className="w-full md:w-1/3 mb-4 md:mb-0">
               <input
+                onChange={(e) => setSearchTerm(e.target.value)}
                 type="text"
                 placeholder="Search users..."
                 className="w-full px-4 py-2 rounded-md border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -75,30 +94,32 @@ function Category() {
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm">
-                {category.length > 0 &&
-                  category.map((categories) => {
+                {filterCategories.length > 0 &&
+                  filterCategories.map((category) => {
                     return (
                       <tr
-                        key={categories.id}
+                        key={category.id}
                         className="border-b border-gray-200 hover:bg-gray-100"
                       >
-                        <td className="py-3 px-6 text-left">{categories.id}</td>
+                        <td className="py-3 px-6 text-left">{category.id}</td>
                         <td className="py-3 px-6 text-left">
-                          {categories.categoryName}
+                          {category.categoryName}
                         </td>
                         <td className="py-3 px-6 text-left">
-                          {categories.categoryDescription}
+                          {category.categoryDescription}
                         </td>
                         <td className="py-3 px-6 text-left">
-                          {new Date(categories.createdAt).toLocaleDateString()}
+                          {new Date(category.createdAt).toLocaleDateString()}
                         </td>
                         <td className="py-3 px-6 text-left">
-                          {new Date(categories.updatedAt).toLocaleDateString()}
+                          {new Date(category.updatedAt).toLocaleDateString()}
                         </td>
 
                         <td className="py-3 px-6 text-center">
                           <div className="flex item-center justify-center">
-                            <button className="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
+                            <button
+                              onClick={() => openModal2(category.id)}
+                              className="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -114,7 +135,7 @@ function Category() {
                               </svg>
                             </button>
                             <button
-                              onClick={()=>openModal1(categories.id)}
+                              onClick={() => openModal1(category.id)}
                               className="w-4 mr-2 transform hover:text-red-500 hover:scale-110"
                             >
                               <svg

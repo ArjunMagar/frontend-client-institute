@@ -100,7 +100,7 @@ export default function HomePageLayout({
                     >
                         <Link href="/" className="logo">
                             <div className="logo-text">
-                                Digital<span>Pathshala</span>
+                                <span style={{fontSize:"31px"}}>e</span>-Learning<span>Space</span>
                             </div>
                         </Link>
 
@@ -178,7 +178,7 @@ export default function HomePageLayout({
                         <div className="footer-grid">
                             <div className="footer-about">
                                 <div className="footer-logo">
-                                    Digital<span>Pathshala</span>
+                                   <span style={{fontSize:"31px"}}>e</span>-Learning<span>Space</span>
                                 </div>
                                 <p>
                                     Transforming businesses and empowering developers through
@@ -251,7 +251,7 @@ export default function HomePageLayout({
                                     </li>
                                     <li>
                                         <i className="fas fa-envelope" />{" "}
-                                        digitalpathshalanepal@gmail.com
+                                        e-learningSpace@gmail.com
                                     </li>
                                     <li>
                                         <i className="fas fa-phone" /> 9864660603
@@ -261,7 +261,7 @@ export default function HomePageLayout({
                         </div>
                         <div className="copyright">
                             <p>
-                                © 2025 Digitalpathshala. All Rights Reserved. Created by Arjun
+                                © 2025 e-LearningSpace. All Rights Reserved. Created by Arjun
                                 Kumar Pun
                             </p>
                         </div>

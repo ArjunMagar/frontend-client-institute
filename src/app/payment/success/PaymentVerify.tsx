@@ -36,7 +36,7 @@ const PaymentVerify = () => {
                 const decoded: IDecodedToken = jwtDecode(token);
                 // Only students are allowed after successful payment
                 if (decoded.role !== "student") {
-                    alert("Order payment successfully !!!")
+                    alert("Order payment successfully,Please! login again as student for firstTime while enrolling our course")
                     localStorage.removeItem("token")
                     router.replace("/auth/login");
                     return;

@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchLessons } from "@/lib/store/lesson/lessonSlice";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 
@@ -15,13 +15,16 @@ function StudentChapterLessons() {
     const { courseId } = useParams<{ courseId: string }>()
     const { chapterId } = useParams<{ chapterId: string }>()
     const router = useRouter()
-
+    const [searchTerm, setSearchTerm] = useState<string>("")
     useEffect(() => {
         const token = localStorage.getItem("token")
         if (!token) return
         if (!chapterId || !instituteId) return
         dispatch(fetchLessons(token, chapterId, instituteId))
     }, [chapterId, instituteId, dispatch])
+
+    const filterLessons = lessons.filter((lesson) => lesson.lessonName.toLocaleLowerCase().includes(searchTerm.toLowerCase())
+        || lesson.id.toLocaleLowerCase().includes(searchTerm.toLowerCase()))
 
     return (
         <>
@@ -35,6 +38,7 @@ function StudentChapterLessons() {
                     <div className="flex flex-col md:flex-row justify-between items-center mb-6">
                         <div className="w-full md:w-1/3 mb-4 md:mb-0">
                             <input
+                                onChange={(e) => setSearchTerm(e.target.value)}
                                 type="text"
                                 placeholder="Search users..."
                                 className="w-full px-4 py-2 rounded-md border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -64,8 +68,8 @@ function StudentChapterLessons() {
                                 </tr>
                             </thead>
                             <tbody className="text-gray-600 text-sm">
-                                {lessons.length > 0 &&
-                                    lessons.map((lesson) => {
+                                {filterLessons.length > 0 &&
+                                    filterLessons.map((lesson) => {
                                         return (
                                             <tr
                                                 key={lesson.id}
