@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useCallback, useEffect, useState } from "react";
 import Modal from "./components/modal/Modal";
 import Modal1 from "./components/modal/Modal1";
+import Modal2 from "./components/modal/Modal2";
 
 function Course() {
   const { courses } = useAppSelector((store) => store.course);
@@ -11,6 +12,7 @@ function Course() {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isModalOpen1, setIsModalOpen1] = useState<boolean>(false);
+  const [isModalOpen2, setIsModalOpen2] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("")
   useEffect(() => {
@@ -33,6 +35,16 @@ function Course() {
     setSelectedId(null);
   };
 
+  const openModal2 = (id: string) => {
+    setSelectedId(id);
+    setIsModalOpen2(true);
+  };
+
+  const closeModal2 = () => {
+    setIsModalOpen2(false);
+    setSelectedId(null);
+  };
+
   const filterCourses = courses.filter((course) => course.courseName.toLowerCase().includes(searchTerm.toLowerCase())
     || course.coursePrice.toString().includes(searchTerm) || course.categoryName.toLowerCase().includes(searchTerm.toLowerCase())
     || course.courseId.toLocaleLowerCase().includes(searchTerm.toLowerCase()))
@@ -46,6 +58,7 @@ function Course() {
         <div className="container mx-auto px-4 py-8">
           {isModalOpen && <Modal closeModal={closeModal} />}
           {isModalOpen1 && <Modal1 id={selectedId} closeModal1={closeModal1} />}
+          {isModalOpen2 && <Modal2 id={selectedId} closeModal2={closeModal2} />}
           <h1 className="text-3xl font-bold text-center mb-8"> Course</h1>
           {/* Search and Add User (Static) */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
@@ -116,7 +129,9 @@ function Course() {
                         </td>
                         <td className="py-3 px-6 text-center">
                           <div className="flex item-center justify-center">
-                            <button className="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
+                            <button
+                              onClick={() => openModal2(course.courseId)}
+                              className="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"

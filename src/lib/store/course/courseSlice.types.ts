@@ -8,6 +8,7 @@ export interface Icourse {
     courseLevel: string,
     courseImage: File | string,
     categoryId: string,
+    courseImageUrl:string
 }
 export interface ICourse extends Icourse {
     instituteId:string,
