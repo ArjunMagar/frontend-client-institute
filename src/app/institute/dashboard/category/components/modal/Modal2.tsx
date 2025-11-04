@@ -1,4 +1,4 @@
-import { deleteCategory, resetStatus, updateCategory } from "@/lib/store/category/categorySlice";
+import { resetStatus, updateCategory } from "@/lib/store/category/categorySlice";
 import { Status } from "@/lib/store/global/types";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { ChangeEvent, useEffect, useState } from "react";

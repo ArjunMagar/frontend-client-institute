@@ -40,7 +40,7 @@ function Teacher() {
   const openModal2 = (id: string) => {
     setSelectedId(id);
     setIsModalOpen2(true);
-  };2
+  };
   const closeModal2 = () => {
     setIsModalOpen2(false);
     setSelectedId(null);

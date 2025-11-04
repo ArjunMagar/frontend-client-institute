@@ -28,7 +28,8 @@ function Modal({ closeModal }: ModalProps) {
         courseDescription: '',
         courseLevel: '',
         courseImage: '',
-        categoryId: ''
+        categoryId: '',
+        courseImageUrl: ''
     });
     console.log(data, "Data.........")
     // const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

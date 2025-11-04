@@ -26,7 +26,8 @@ function Modal({ closeModal }: ModalProps) {
         teacherSalary: "",
         teacherJoinedDate: "",
         courseId: "",
-        teacherPhoto: ""
+        teacherPhoto: "",
+        teacherPhotoUrl: ""
 
     });
     // console.log(data, "Data.........");
