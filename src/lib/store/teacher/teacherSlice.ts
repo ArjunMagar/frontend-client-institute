@@ -4,102 +4,132 @@ import { ITeacher, Iteacher, IteacherState } from "./teacherSlice.types";
 import { AppDispatch } from "../store";
 import API from "@/lib/http";
 
-const initialState:IteacherState = {
+const initialState: IteacherState = {
     teachers: [],
-    status:Status.Loading
+    status: Status.Loading
 }
 
 const teacherSlice = createSlice({
     name: "teacher",
     initialState,
-    reducers:{
-        setStatus(state:IteacherState,action:PayloadAction<Status>){
-            state.status =action.payload
+    reducers: {
+        setStatus(state: IteacherState, action: PayloadAction<Status>) {
+            state.status = action.payload
         },
-        resetStatus(state:IteacherState){
+        resetStatus(state: IteacherState) {
             state.status = Status.Loading
         },
-        setTeacher(state:IteacherState,action:PayloadAction<Iteacher[]>){
+        setTeacher(state: IteacherState, action: PayloadAction<Iteacher[]>) {
             state.teachers = action.payload
         },
-        addTeacher(state:IteacherState,action:PayloadAction<Iteacher>){
+        addTeacher(state: IteacherState, action: PayloadAction<Iteacher>) {
             state.teachers.push(action.payload)
         },
-        removeTeacher(state:IteacherState,action:PayloadAction<string>){
-            const index = state.teachers.findIndex((item)=>item.id ===action.payload)
-            if(index !== -1){
-                state.teachers.splice(index,1)
+        removeTeacher(state: IteacherState, action: PayloadAction<string>) {
+            const index = state.teachers.findIndex((item) => item.id === action.payload)
+            if (index !== -1) {
+                state.teachers.splice(index, 1)
+            }
+        },
+        patchTeacher(state: IteacherState, action: PayloadAction<Iteacher>) {
+            const index = state.teachers.findIndex((teacher) => teacher.id === action.payload.id)
+            if (index !== -1) {
+                state.teachers.splice(index, 1, action.payload)
             }
         }
+
     }
 })
 
-export const {setStatus,resetStatus,setTeacher,addTeacher,removeTeacher} =  teacherSlice.actions
+export const { setStatus, resetStatus, setTeacher, addTeacher, removeTeacher,patchTeacher } = teacherSlice.actions
 export default teacherSlice.reducer
 
-export function fetchTeacher(token:string){
-    return async function fetchTeacherThunk(dispatch:AppDispatch) {
+export function fetchTeacher(token: string) {
+    return async function fetchTeacherThunk(dispatch: AppDispatch) {
         try {
-            const response = await API.get('/institute/teacher',{
-                headers:{
+            const response = await API.get('/institute/teacher', {
+                headers: {
                     Authorization: `${token}`
                 }
             })
-            if(response.status === 200){
+            if (response.status === 200) {
                 dispatch(setStatus(Status.Success))
                 dispatch(setTeacher(response.data.data))
                 dispatch(resetStatus())
-            }else{
+            } else {
                 dispatch(setStatus(Status.Error))
             }
-            console.log(response,"Check data...")
+            console.log(response, "Check data...")
         } catch (error) {
             console.log(error)
-               dispatch(setStatus(Status.Error))
+            dispatch(setStatus(Status.Error))
         }
-            
+
     }
 }
-export function createTeacher(token:string,data:ITeacher){
-    return async function createTeacherThunk(dispatch:AppDispatch){
+export function createTeacher(token: string, data: ITeacher) {
+    return async function createTeacherThunk(dispatch: AppDispatch) {
         try {
-            const response = await API.post('/institute/teacher',data,{
-                headers:{
+            const response = await API.post('/institute/teacher', data, {
+                headers: {
                     Authorization: `${token}`,
                     "Content-Type": "multipart/form-data"
-                },                
+                },
             })
-            if(response.status === 201){
+            if (response.status === 201) {
                 dispatch(setStatus(Status.Success))
                 dispatch(addTeacher(response.data.data[0]))
-            }else{
+            } else {
                 dispatch(setStatus(Status.Error))
             }
-            console.log(response.data.data[0],"arjun kumar pun")
+            console.log(response.data.data[0], "arjun kumar pun")
         } catch (error) {
             console.log(error)
-              dispatch(setStatus(Status.Error))
+            dispatch(setStatus(Status.Error))
         }
     }
 }
-export function deleteTeacher(token:string,id:string){
-    return async function deleteTeacherThunk(dispatch:AppDispatch){
+export function deleteTeacher(token: string, id: string) {
+    return async function deleteTeacherThunk(dispatch: AppDispatch) {
         try {
-            const response = await API.delete('/institute/teacher/'+id,{
-                headers:{
+            const response = await API.delete('/institute/teacher/' + id, {
+                headers: {
                     Authorization: `${token}`,
-                },                
+                },
             })
-            if(response.status === 200){
+            if (response.status === 200) {
                 dispatch(setStatus(Status.Success))
                 dispatch(removeTeacher(id))
-            }else{
+            } else {
                 dispatch(setStatus(Status.Error))
             }
-            console.log(response,"data........")
+            console.log(response, "data........")
         } catch (error) {
             console.log(error)
-              dispatch(setStatus(Status.Error))
+            dispatch(setStatus(Status.Error))
+        }
+    }
+}
+
+export function updateTeacher(token: string, id: string, data: ITeacher) {
+    return async function updateTeacherThunk(dispatch: AppDispatch) {
+        try {
+            const response = await API.patch(`/institute/teacher/${id}`, data, {
+                headers: {
+                    Authorization: `${token}`,
+                    "Content-Type": "multipart/form-data"
+                },
+            })
+            if (response.status === 200) {
+                dispatch(setStatus(Status.Success))
+                dispatch(patchTeacher(response.data.data[0]))
+            } else {
+                dispatch(setStatus(Status.Error))
+            }
+            console.log(response.data.data[0], "arjun kumar pun")
+        } catch (error) {
+            console.log(error)
+            dispatch(setStatus(Status.Error))
         }
     }
 }

@@ -8,6 +8,7 @@ export interface ITeacher {
     teacherJoinedDate: string,
     teacherPhoto: string,
     courseId: string,
+    teacherPhotoUrl:string
 
 }
 
